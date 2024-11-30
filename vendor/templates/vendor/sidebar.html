@@ -1,0 +1,15 @@
+<li class="{% if request.path == '/vendor/' or request.path == '/vendorDashboard/' %}active{% endif %}">
+    <a href="{% url 'vendorDashboard' %}"><i class="icon-dashboard3"></i>Dashboard</a>
+</li>
+<li class="{% if 'profile' in request.path %}active{% endif %}">
+    <a href="{% url 'profile' %}"><i class="icon-building"></i>My Restaurant</a>
+</li>
+<li class="{% if 'menu_manager' in request.path %}active{% endif %}">
+    <a href="{% url 'menu_manager' %}"><i class="icon-menu5"></i>Menu manager</a>
+</li>
+<li class="{% if 'opening_hours' in request.path %}active{% endif %}">
+    <a href="{% url 'opening_hours' %}"><i class="icon-menu5"></i>Opening hours</a>
+</li>
+<li class="{% if 'my_orders' in request.path %}active{% endif %}">
+    <a href="{% url "vendor_my_orders" %}"><i class="icon-add_shopping_cart"></i>Orders</a>
+</li>

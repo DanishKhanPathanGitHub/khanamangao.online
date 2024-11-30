@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include "vendor/profileHeader.html" %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <div class="user-account-nav user-account-sidebar">
+                        <div class="user-nav-list">
+                            <ul>
+                                {% include "vendor/sidebar.html" %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h5>Manage Your menu</h5>
+									<!-- My Restaurants Form Start -->
+                                    <hr>
+                                    <h6>menu categories</h6>
+                                    <div class="text-right">
+                                        <a href="{% url "food_add" %}" class="btn btn-success m-1">Add food</a>
+                                        <a href="{% url "category_add" %}" class="btn btn-success m-1">Add category</a>
+                                    </div>
+									<table class="table table-hover table-borderless">
+                                        <tbody>
+                                        {% if categories %}
+                                        {% for category in categories %}
+                                          <tr>
+                                            <th class='text-left'scope="row">{{forloop.counter}}</th>
+                                            <td class='text-left'>
+                                                <a href="{% url "foodItem_by_category" category.pk %}"><p>{{category}}</p></a>
+                                                <small>{{category.description}}</small>
+                                            </td>
+                                            <td>
+                                                <a href="{% url "category_edit" category.id %}" style="color:unset"><i class="fa fa-edit"></i></a>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <a href="{% url "category_delete" category.id %}" style="color:red" onclick="return confirm('Confirm delete category?')"><i class="fa fa-trash text-danger"></i></a>
+                                            </td>
+                                          </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                        No categories
+                                        {% endif %}
+                                        </tbody>
+                                        {% if messages %}
+                                        {% for message in messages  %}
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        {{message}}
+                                        </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                      </table>
+									<!-- My Restaurants Form End -->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% endblock content %}

@@ -1,0 +1,7 @@
+{% autoescape off %}
+
+You have reeived a new order,
+Your order number: {{ order.order_number }}
+Transaction id: {{ order.payment.transaction_id }}
+View order details: http://{{domain}}/{% url "vendor_order_detail" order.order_number %} 
+{% endautoescape %}

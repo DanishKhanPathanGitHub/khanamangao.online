@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    {% include "customer/sidebar.html" %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h5 class="text-uppercase">Overview</h5>
+                            <div class="container pb-3">
+                                <div class="row">
+                                    <!-- Logged In As Box -->
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="box bg-light p-4 text-center shadow-sm rounded">
+                                            <h6>Logged in as</h6>
+                                            <p class="font-weight-bold text-truncate">{{ request.user.email }}</p> <!-- Ensure text stays within the box -->
+                                        </div>
+                                    </div>
+                                    <!-- Total Orders Box -->
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="box bg-light p-4 text-center shadow-sm rounded">
+                                            <h6>Total Orders</h6>
+                                            <p class="font-weight-bold">{{total_orders}}</p> <!-- Replace with actual order count -->
+                                        </div>
+                                    </div>
+                                    <!-- Edit Profile Box -->
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="box bg-light p-4 text-center shadow-sm rounded">
+                                            <a href="{% url 'customer_profile' %}" class="btn btn-success">Edit Profile</a> <!-- Replace with correct URL -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="user-orders-list">
+                                        <div class="responsive-table">
+                                            <ul class="table-generic">
+                                                <li class="order-heading-titles">
+                                                    <div>Order id</div>
+                                                    <div>Date</div>
+                                                    <div>Total</div>
+                                                    <div>Status</div>
+                                                    <div>Details</div>
+                                                </li>
+                                                {% for order in orders %}
+                                                <li class="order-heading-titles">
+                                                    <div>{{order.order_number}}</div>
+                                                    <div>{{order.created_at|date}}</div>
+                                                    <div>Rs. {{order.total}}</div>
+                                                    <div><span class="order-status" style="background-color: #047a06;">{{order.status}}</span></div>
+                                                    <div><a class="btn btn-danger" href="{% url "order_detail" order.order_number %}">view</a></div>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+
+                                        </div>												
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% if messages %}
+{% for message in messages  %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+{{message}}
+</div>
+{% endfor %}
+{% endif %}
+{% endblock content %}

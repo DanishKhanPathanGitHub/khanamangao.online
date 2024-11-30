@@ -1,0 +1,12 @@
+{% autoescape off %}
+
+Hi {{user.first_name}}
+{% if is_approved %}
+Your restaurant has been approved by our team. now your restaurant is live on our khanamangao marketplace. 
+Share your dishes to taste everyone around the world!
+{% else %}
+Due to some privacy policy or autorization issues, we suspended your account. 
+We will keep informing you about it. you can retry approval of your restaurant
+{% endif %}
+
+{% endautoescape %}

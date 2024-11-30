@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="order-summary bg-white p-4 shadow-sm">
+                <div class="text-left mb-4">
+                    <a class="btn btn-success" href="{% url "vendor_my_orders" %}"><i class="fa fa-long-arrow-left" style="font-size:24px;"></i></a>
+                    <img src="{% static '/logo/khanamangao.png' %}" alt="FoodBakery" width="200">
+                </div>
+                <!-- Order and User Details Section -->
+                <div class="order-details mb-4">
+                    <div class="d-flex flex-column">
+                        <h4 class="text-center mb-3">{{order.name}} Ordered from Your restaurant, <br>Here's the bill summary</h4>
+                        <div class="text-center">
+                            <p class="mb-0">{{ order.name }}</p>
+                            <p class="mb-0">{{ order.address }}</p>
+                            <p class="mb-0">{{ order.email }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Meta Information -->
+                <div class="order-meta mb-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Order Date:</strong> {{ order.updated_at }}</p>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <p><strong>Order No:</strong> {{ order.order_number }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Payment Method:</strong> {{ order.payment.payment_method }}</p>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <p><strong>Transaction ID:</strong> {{ order.payment.transaction_id }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Ordered Food Items Section -->
+                <h5 class="mb-3">Ordered Items</h5>
+                <div id="menu-item-list-6272" class="menu-item-list">
+                    <ul class="list-group mb-4">
+                        {% for item in ordered_food %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ item.fooditem.image.url }}" alt="food_image.png" class="img-fluid rounded" width="50">
+                                <div class="ml-3">
+                                    <h6 class="mb-0">{{ item.fooditem.food_name }} - {{ item.quantity }}x</h6>
+                                    <a href="{% url 'vendor_detail' item.fooditem.vendor.slug %}" class="text-muted small">{{ item.fooditem.vendor }}</a>
+                                </div>
+                            </div>
+                            <span class="price font-weight-bold">Rs {{ item.fooditem.price }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <hr>
+
+                <!-- Billing Summary Section -->
+                <h5 class="mb-3">Billing Summary</h5>
+                <ul class="list-unstyled">
+                    <li class="d-flex justify-content-between">
+                        <span>Subtotal</span>
+                        <span class="font-weight-bold">Rs {{ subtotal }}</span>
+                    </li>
+                    {% for taxtype, value in tax_data.items %}
+                    <li class="d-flex justify-content-between">
+                        <span>{{ taxtype }} ({{ value.0 }})</span>
+                        <span class="font-weight-bold">Rs {{ value.1 }}</span>
+                    </li>
+                    {% endfor %}
+                    <hr>
+                    <li class="d-flex justify-content-between font-weight-bold">
+                        <span>Total (incl. taxes)</span>
+                        <span>Rs {{ total }}</span>
+                    </li>
+                    <hr>
+                    <a class="btn btn-success" href="{% url "vendor_my_orders" %}">Back to my orders</a>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

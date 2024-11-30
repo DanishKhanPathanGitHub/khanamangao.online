@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include "vendor/profileHeader.html" %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <div class="user-account-nav user-account-sidebar">
+                        <div class="user-nav-list">
+                            <ul>
+                                {% include "vendor/sidebar.html" %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <button onclick="history.back()" class="btn btn-secondary">Go Back</button><br><br>
+                            <h5>Add food</h5>
+									<!-- My Restaurants Form Start -->
+                                    <form action="{% url "food_add" %}" method='POST' enctype="multipart/form-data">
+										{% csrf_token %}
+										<div class="form-fields-set">
+											<ul>
+												<li>
+													<div class="row">
+														<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+															<div class="restaurant-info">
+																<div class="text-holder">
+																	<label>Food image</label>
+																	<div class="upload-gallery">
+																		{{food_item_form.image}}
+																	</div>
+																</div>
+																{{food_item_form.image.errors}}
+															</div>
+														</div>
+														<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+															<div class="field-holder">
+																<label>Food name*</label>
+																{{food_item_form.food_name}}
+															</div>
+														</div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+															<div class="field-holder">
+																<label>Select category</label>
+																{{food_item_form.category}}
+															</div>
+														</div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+															<div class="field-holder">
+																<label>Description</label>
+																{{food_item_form.description}}
+															</div>
+														</div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+															<div class="field-holder">
+																<label>Price</label>
+																{{food_item_form.price}}
+															</div>
+														</div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+															<div class="field-holder">
+																<label>is available</label>
+																{{food_item_form.is_available}}
+															</div>
+														</div>
+														{% for field in food_item_form %}
+                                                        {% if field.errors %}
+                                                            {% for error in field.errors %}
+                                                                <li style="color:red">{{error}}</li>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    	{% endfor %}
+													</div>
+												</li>
+											</ul>
+												<div class="field-holder">
+													<div class="payment-holder input-button-loader">
+														<input  type="submit" value="Add">
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+									<!-- My Restaurants Form End -->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% endblock content %}

@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- Main Section Start -->
+<div class="main-section pt-5">
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                    <div class="tabs-holder horizontal">
+                        <ul class="stickynav-tabs nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#home"><i class="fa fa-shopping-cart text-danger"></i>Cart items</a></li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane in active">
+                                <div class="menu-itam-holder">
+                                    <div id="menu-item-list-6272" class="menu-itam-list">
+                                        <ul>
+                                            {% if cart_items %}
+                                                {% for item in cart_items %}
+                                                <li id="cart-item-{{item.id}}" class="custom-cart-item">
+                                                    <!-- First Row: Image and Title -->
+                                                    <div class="custom-line">
+                                                        <div class="custom-image-holder">
+                                                            <img src="{{item.fooditem.image.url}}" alt="food_image.png">
+                                                        </div>
+                                                        <div class="custom-text-holder">
+                                                            <h6>{{item.fooditem}}</h6>
+                                                            <a href="{% url "vendor_detail" item.fooditem.vendor.slug %}" class="badge badge-warning">
+                                                                {{item.fooditem.vendor}}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                    
+                                                    <!-- Second Row: Price and Controls -->
+                                                    <div class="custom-price-holder">
+                                                        <span class="custom-price">{{item.fooditem.price}}</span>
+                                    
+                                                        <a href="#" class="add_to_cart" data-id="{{item.fooditem.id}}" data-url="{% url "add_to_cart" item.fooditem.id %}" style="margin-right:0px; font-size:20px;">
+                                                            <i class="fa fa-plus-circle p-2 text-color"></i>
+                                                        </a>
+                                    
+                                                        <label id="qty-{{item.fooditem.id}}" class="custom-quantity">
+                                                            {% if item.quantity %}{{item.quantity}}{% else %}0{% endif %}
+                                                        </label>
+                                    
+                                                        <a href="#" class="decrease_cart" item-id="{{item.id}}" data-id="{{item.fooditem.id}}" data-url="{% url "decrease_cart" item.fooditem.id %}" style="font-size:20px;">
+                                                            <i class="fa fa-minus-circle p-2 text-color"></i>
+                                                        </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    
+                                                        <a href="#" class="delete_cart" data-id="{{item.id}}" data-url="{% url "delete_cart" item.id %}" style="font-size:20px;">
+                                                            <i class="icon-delete text-color"></i>
+                                                        </a>
+                                                    </div>
+                                    
+                                                    <!-- Third Row: Description -->
+                                                    <div class="custom-description">
+                                                        <span>{{item.fooditem.description}}</span>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            {% else %}
+                                                <div class="text-center p-5">
+                                                    <h2 style="color:red">Cart is empty</h2>
+                                                </div>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <!--Your order section-->
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="tabs-holder horizontal">
+                        <ul class="stickynav-tabs nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Your order</a></li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane in active">
+                                <div class="menu-itam-holder">
+                                    
+                                    <div>
+                                        <ul>
+                                            <li style="list-style-type: none;">
+                                                Subtotal
+                                                <span class="price float-right">
+                                                    <span class="currency">Rs</span>
+                                                    <span class="subtotal">{{subtotal}}</span>
+                                                </span>
+                                            </li>
+                                            {% for taxtype, value in taxes.items %}
+                                            <li style="list-style-type: none;">
+                                                {{taxtype}} - {{value.0}}%
+                                                <span class="price float-right">
+                                                    <span class="currency">Rs</span>
+                                                    <span id="tax-{{taxtype}}">{{value.1}}</span>
+                                                </span>
+                                            {% endfor %}
+                                            <li style="list-style-type: none; font-weight: 600;">
+                                                Total
+                                                <span class="price float-right">
+                                                    <span class="currency">Rs</span>
+                                                    <span class="subtotal">{{subtotal}}</span> + 
+                                                    <span id="taxtotal">{{taxtotal}}</span>:
+                                                    <span id="total">{{total}}</span>
+                                                    
+                                                </span>
+                                            </li>
+                                            <a href="{% url "checkout" %}" class="btn btn-danger w-100 p-2 mt-3">Checkout</a>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% if messages %}
+{% for message in messages  %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+{{message}}
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

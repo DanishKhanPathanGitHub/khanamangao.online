@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include "vendor/profileHeader.html" %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <div class="user-account-nav user-account-sidebar">
+                        <div class="user-nav-list">
+                            <ul>
+                                {% include "vendor/sidebar.html" %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <button onclick="history.back()" class="btn btn-secondary">Go Back</button><br><br>
+                        <div class="user-holder">
+                            <h5>Manage Your menu</h5>
+									<!-- My Restaurants Form Start -->
+                                    <hr>
+                                    <h6>category: <span color="red">{{category}}</span></h6>
+									<table class="table table-hover table-borderless">
+                                        <tbody>
+                                        {% if messages %}
+                                            {% for message in messages  %}
+                                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    {{message}}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if food_items %}
+                                        {% for food in food_items %}
+                                          <tr>
+                                            <th class='text-left'scope="row">{{forloop.counter}}</th>
+                                            <td class='text-left'><img src="{{food.image.url}}" alt="food.png" width="50"></td>
+                                            <td class="text-left">    
+                                                <a href=#><p>{{food}}</p></a>
+                                                <small>{{food.description}}</small>
+                                            </td>
+                                            <td>
+                                                {% if food.is_available %}
+                                                <span class="badge badge-success">Available</span>
+                                                {% else %}
+                                                <span class="badge badge-dark">not available</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{% url "food_edit" food.id %}" style="color:unset"><i class="fa fa-edit"></i></a>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <a href="{% url "food_delete" food.id %}" onclick="return confirm('Confirm delete?')"><i class="fa fa-trash text-danger"></i></a>
+                                            </td>
+                                          </tr>
+                                        {% endfor %}
+                                        <div class="text-right">
+                                            <a href="{% url "food_add" %}" class="btn btn-success m-1">Add food item</a>
+                                        </div>  
+                                        {% else %}
+                                        <div class="text-center">
+                                            <a href="{% url "food_add" %}" class="btn btn-success m-1">Add food item</a>
+                                        </div>
+                                        {% endif %}
+                                        </tbody>
+                                      </table>
+									<!-- My Restaurants Form End -->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+{% endblock content %}

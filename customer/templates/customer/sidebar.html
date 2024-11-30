@@ -1,0 +1,24 @@
+{% load static %}
+<div class="user-account-nav user-account-sidebar">
+    <div class="user-nav-list">
+        <ul>
+            <li class="{% if '/customer/' == request.path or '/custDashboard/' == request.path %}active{% endif %}">
+                <a href="{% url "custDashboard" %}">
+                    <i class="icon-dashboard3"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="{% if 'customer_profile' in request.path %}active{% endif %}">
+                <a href="{% url "customer_profile" %}"><i class="icon-building"></i>
+                    My profile
+                </a>
+            </li>
+
+            <li class="{% if 'my_orders' in request.path %}active{% endif %}">
+                <a href="{% url "my_orders" %}"><i class="icon-add_shopping_cart">
+                </i>Orders</a></li>
+            <li><a href="#"><i class="icon-unlock-alt"></i>Change Password</a></li>
+            <li><a class="logout-btn" href="registration.html"><i class="icon-log-out"></i>Signout</a></li>
+        </ul>
+    </div>
+</div>

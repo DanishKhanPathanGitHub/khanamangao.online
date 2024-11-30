@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include "vendor/profileHeader.html" %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <div class="user-account-nav user-account-sidebar">
+                        <div class="user-nav-list">
+                            <ul>
+                                {% include "vendor/sidebar.html" %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h5 class="text-uppercase">Overview</h5>
+                            <div class="container pb-3">
+                                <div class="row">
+                                    <!-- Logged In As Box -->
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="box bg-light p-4 text-center shadow-sm rounded">
+                                            <h6>Total orders</h6>
+                                            <p class="font-weight-bold text-truncate">{{ total_orders }}</p> <!-- Ensure text stays within the box -->
+                                            <a href="{% url "vendor_my_orders" %}" class="btn btn-success px-2 py-0"><i class="fa fa-long-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                    <!-- Total Orders Box -->
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="box bg-light p-4 text-center shadow-sm rounded">
+                                            <h6>Total revenue</h6><br>
+                                            <p class="font-weight-bold">{{revenue}}</p> <!-- Replace with actual order count -->
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="box bg-light p-4 text-center shadow-sm rounded">
+                                            <h6>This month revenue</h6>
+                                            <p class="font-weight-bold">{{this_month_revenue}}</p> <!-- Replace with actual order count -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h5>Recent orders</h5>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="user-orders-list">
+                                        <div class="responsive-table">
+                                            <ul class="table-generic">
+                                                <li class="order-heading-titles">
+                                                    <div>Order ID</div>
+                                                    <div>Date</div>
+                                                    <div>Total</div>
+                                                    <div>Status</div>
+                                                    <div>Details</div>
+                                                </li>
+                                                {% for order in vendor_orders %}
+                                                <li class="order-heading-titles">
+                                                    <div>{{ order.order_number }}</div>
+                                                    <div>{{ order.date|date }}</div>
+                                                    <div>Rs. {{ order.total }}</div>
+                                                    <div><span class="order-status" style="background-color: #047a06;">{{order.status}}</span></div>
+                                                    <div><a class="btn btn-danger" href="{% url "vendor_order_detail" order.order_number %}">view</a></div>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>										
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% if messages %}
+{% for message in messages  %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+{{message}}
+</div>
+{% endfor %}
+{% endif %}
+{% endblock content %}

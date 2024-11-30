@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- Main Section Start -->
+<div class="main-section pt-5">
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                    <div class="tabs-holder horizontal">
+                        <ul class="stickynav-tabs nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#home"><i class="fa fa-shopping-cart text-danger"></i>Review your payment details</a></li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane in active">
+                                <div class="menu-itam-holder">
+                                    
+                                    <div id="menu-item-list-6272" class="menu-item-list">
+                                        <div class="billing-address">
+                                            <div><b>Name:</b> {{order.name}}</div>
+                                            <b>Address details:</b>
+                                            <div>{{order.address}}</div>
+                                            <div>{{ order.city }}, {{ order.pincode }}</div>
+                                            <div>{{ order.state }}, {{order.country}}</div>
+                                            <b>Email:</b> {{order.email}}</div>
+                                            <div><b>Payment:</b> {{payment_method}}</div>
+                                            <br>
+                                            <div><a href="{% url 'checkout' %}" class="btn btn-outilne-danger">Edit</a></div>
+                                            <br>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <!--Your order section-->
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="tabs-holder horizontal">
+                        <ul class="stickynav-tabs nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Your order</a></li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane in active">
+                                <div class="menu-itam-holder">
+                                    <div id="menu-item-list-6272" class="menu-itam-list">
+                                        <ul>
+                                            {% for item in cart_items %}
+                                            <li id="cart-item-{{item.id}}">
+                                                <div class="image-holder"> <img src="{{item.fooditem.image.url}}" alt="food_image.png" width="50px;"></div>
+                                                <div class="text-holder">
+                                                    <h6>{{item.fooditem}} - {{item.quantity}}x</h6>
+                                                    <a href="{% url "vendor_detail" item.fooditem.vendor.slug %}" class="badge badge-warning">{{item.fooditem.vendor}}</a>
+                                                </div>
+                                                <div class="price-holder row">
+                                                    <div class="price">
+                                                        <span class="price">{{item.fooditem.price}}</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                        
+                                    </div>
+                                    <div>
+                                        <ul>
+                                            <li style="list-style-type: none;">
+                                                Subtotal
+                                                <span class="price float-right">
+                                                    <span class="currency">Rs</span>
+                                                    <span class="subtotal">{{subtotal}}</span>
+                                                </span>
+                                            </li>
+                                            {% for taxtype, value in taxes.items %}
+                                            <li style="list-style-type: none;">
+                                                {{taxtype}} - {{value.0}}%
+                                                <span class="price float-right">
+                                                    <span class="currency">Rs</span>
+                                                    <span id="tax-{{taxtype}}">{{value.1}}</span>
+                                                </span>
+                                            {% endfor %}
+                                            </li>
+                                            <hr style="border-top: 1px solid #000;"> 
+                                            <li style="list-style-type: none; font-weight: 600;">
+                                                Total
+                                                <span class="price float-right">
+                                                    <span class="currency">Rs</span>
+                                                    <span class="subtotal">{{subtotal}}</span> + 
+                                                    <span id="taxtotal">{{taxtotal}}</span>:
+                                                    <span id="total">{{total}}</span>
+                                                    
+                                                </span>
+                                            </li>
+
+                                            {% if payment_method == 'RazorPay' %}
+                                            <div id="rzp_payment_button">
+                                                <button class="btn btn-danger w-100 p-2" id="rzp-button1">Pay with RazorPay</button>
+                                                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                                            </div>
+                                            {% endif %}
+                                        </ul>
+                                        
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    const csrftoken = getCookie('csrftoken');
+
+    var options = {
+        "key": "{{RZP_KEY_ID}}", // Enter the Key ID generated from the Dashboard
+        "amount": "{{rzp_amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Food online", //your business name
+        "description": "Test Transaction",
+        "image": "{% static '/logo/khanamangaoLogo.png' %}",
+        "order_id": "{{rzp_order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+            //alert('payment_id'+response.razorpay_payment_id);
+            //alert('order_id'+response.razorpay_order_id);
+            //alert('signature'+response.razorpay_signature)
+            document.getElementById('rzp_payment_button').innerHTML = '<h4 class="text-center"><i class="fa fa-spinner fa-spin"></i> Please wait...</h4>';
+
+            var transaction_id = response.razorpay_payment_id
+            var payment_method = 'RazorPay'
+            var status = 'Success'
+            sendTransactions(transaction_id, payment_method, status)
+        },
+        "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+            "name": "{{order.name}}", //your customer's name
+            "email": "{{order.email}}", 
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#dc3545"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response){
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+    });
+    document.getElementById('rzp-button1').onclick = function(e){
+        rzp1.open();
+        e.preventDefault();
+    }
+
+
+    function sendTransactions(transaction_id, payment_method, status){
+        $.ajax({
+            type:'POST',
+            url:"{% url 'payments' %}",
+            data: {
+                'order_number': "{{ order.order_number }}",
+                'transaction_id':transaction_id,
+                'payment_method':payment_method,
+                'status':status,
+                'csrfmiddlewaretoken':csrftoken,
+            },
+            success: function(response){
+                window.location.href = '/customer/my_orders/' + response.order_number;
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong with your order. Please try again!',
+                    confirmButtonText: 'Go to Cart'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/cart/';  // Redirect to cart page
+                    }
+                });
+            }
+        });
+    }
+</script>
+<!-- Main Section End -->
+{% endblock %}

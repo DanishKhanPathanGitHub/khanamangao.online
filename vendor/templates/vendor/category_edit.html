@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include "vendor/profileHeader.html" %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <div class="user-account-nav user-account-sidebar">
+                        <div class="user-nav-list">
+                            <ul>
+                                {% include "vendor/sidebar.html" %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <button onclick="history.back()" class="btn btn-secondary">Go Back</button><br><br>
+                            <h5>Edit category</h5>
+									<!-- My Restaurants Form Start -->
+                                    <form action="{% url "category_edit" category.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="form-fields-set">
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                                    <div class="field-holder">
+                                                        <label>category name</label>
+                                                        {{category_form.category_name}}
+                                                    </div>
+                                                    <div class="field-holder">
+                                                        <label>category description</label>
+                                                        {{category_form.description}}
+                                                    </div>
+                                                    {% for field in category_form %}
+                                                        {% if field.errors %}
+                                                            {% for error in field.errors %}
+                                                                <li style="color:red">{{error}}</li>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <button type="submit" class="btn btn-success m-1" >Update</button>
+                                                <a href="{% url "category_delete" category.id %}" >
+                                                    <button onclick="return confirm('Confirm delete category?')" type="button" class="btn btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+									<!-- My Restaurants Form End -->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% endblock content %}

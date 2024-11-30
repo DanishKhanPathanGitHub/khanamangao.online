@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include "vendor/profileHeader.html" %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <div class="user-account-nav user-account-sidebar">
+                        <div class="user-nav-list">
+                            <ul>
+                                {% include "vendor/sidebar.html" %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h5 class="text-uppercase">Opening hours</h5>
+                            <br>
+                        
+                            <table class="table opening_hours">
+                                <tbody style="border:none;">
+                                    {% for hour in opening_hours %}
+                                    <tr id="hour-{{ hour.id }}">
+                                        <td><b>{{hour}}</b></td>
+                                        <td>
+                                            {% if hour.is_closed %}
+                                            Closed
+                                            {% else %}
+                                            {{hour.from_hour}} - {{hour.to_hour}}
+                                            {% endif %}
+                                        </td>  
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <form id="opening_hours">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Day</label>
+                                        {{form.day}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>From hour</label>
+                                        {{form.from_hour}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>To hour</label>
+                                        {{form.to_hour}}
+                                    </div>
+                                    <div class="col-md-1">
+                                        {{form.is_closed}} closed
+                                    </div>
+                                    <br><br>
+                                    <div class="button">
+                                        <input type="hidden" value="{% url "opening_hours_add" %}" id="add_hour_url">
+                                        <button class="btn btn-success add_hour">Add</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% endblock content %}

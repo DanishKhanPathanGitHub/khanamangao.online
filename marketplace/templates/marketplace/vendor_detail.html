@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+    <div class="page-section restaurant-detail-image-section" style=" background: url({% if vendor.cover_pic %}{{vendor.cover_pic.url}}{% else %}{% static "images/default-cover.png" %}{% endif %}) no-repeat scroll 0 0 / cover;">
+        <!-- Container Start -->
+        <div class="container">
+            <!-- Row Start -->
+            <div class="row">
+                <!-- Column Start -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="company-info-detail">
+                        <div class="company-info">
+                            <div class="img-holder">
+                                <figure>
+                                    <img src="{% if vendor.vendor_profile.profile_pic %}{{vendor.vendor_profile.profile_pic.url}}{% else %}{% static "images/default-profile.png" %}{% endif %}" alt="">
+                                </figure>
+                            </div>
+                            <div class="text-holder">
+                                <span class="restaurant-title">
+                                    {{vendor.vendor_name}}
+                                <span style="font-size:22px; color:red;">
+                                    {% if is_open %}
+                                    {% else %}
+                                    [Right now closed]
+                                    {% endif %}
+                                </span>
+                                </span>
+                                <span><small style="color:white">{{vendor.vendor_profile.address}}</small></span>
+                            </div>
+                        </div>
+                        {% if opening_hours %}
+                        <div class="delivery-timing reviews-sortby">
+                            <ul>
+                                <li class="dropdown">
+                                    <a href="#" aria-expanded="false">
+                                        <span>{{today_hour}} :</span>
+                                        {{today_hour.from_hour}} - {{today_hour.to_hour}} <i class="icon-chevron-small-down"></i>
+                                    </a>
+                                    <ul class="delivery-dropdown dropdown-menu" aria-labelledby="dropdownMenu">
+                                        {% for hour in opening_hours %}
+                                        <li>
+                                            <a href="#">
+                                                <span class="opend-day">{{ hour }}</span>
+                                                <span class="opend-time"><small>:</small> 
+                                                    {% if hour.is_closed %}
+                                                    Closed
+                                                    {% else %}
+                                                    {{ hour.from_hour }} - {{ hour.to_hour }}
+                                                    {% endif %}
+                                                </span>
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>                        
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Column End -->
+            </div>
+            <!-- Row End -->
+        </div>
+        <!-- Container End -->
+    </div>
+
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 sticky-sidebar">
+                    <div class="filter-wrapper">
+                        <div class="categories-menu">
+                            <h6><i class="icon-restaurant_menu"></i>Categories</h6>
+                            <ul class="menu-list">
+                                {% for category in categories %}
+                                <li class=""><a href="#" class="menu-category-link"> {{category.category_name}} </a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                    <div class="tabs-holder horizontal">
+                        <ul class="stickynav-tabs nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Menu</a></li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane in active">
+                                <div class="menu-itam-holder">
+                                    
+                                    <div id="menu-item-list-6272" class="menu-itam-list">
+                                        
+                                        {% for category in categories %}
+                                        <div class="element-title" id="menu-category-2">
+                                            <h5 class="text-color">{{category.category_name}}</h5>
+                                            <span>{{category.description}}</span>
+                                        </div>
+                                        <ul>
+                                            {% for food in category.fooditems.all %}
+                                            <li class="custom-cart-item">
+                                                <!-- First Row: Image and Title -->
+                                                <div class="custom-line">
+                                                    <div class="custom-image-holder">
+                                                        <img src="{{food.image.url}}" alt="food_image.png">
+                                                    </div>
+                                                    <div class="custom-text-holder">
+                                                        <h6>{{food}}</h6>
+                                                    </div>
+                                                </div>
+                                        
+                                                <!-- Second Row: Price and Controls -->
+                                                <div class="custom-price-holder">
+                                                    <span class="custom-price">{{food.price}}</span>
+                                        
+                                                    <a href="#" class="add_to_cart" data-id="{{food.id}}" data-url="{% url "add_to_cart" food.id %}" style="margin-right:0px; font-size:20px;">
+                                                        <i class="fa fa-plus-circle p-2 text-color"></i>
+                                                    </a>
+                                        
+                                                    <label id="qty-{{food.id}}" class="custom-quantity">
+                                                        {% if item.quantity %}{{item.quantity}}{% else %}0{% endif %}
+                                                    </label>
+                                        
+                                                    <a href="#" class="decrease_cart" data-id="{{food.id}}" data-url="{% url "decrease_cart" food.id %}" style="font-size:20px;">
+                                                        <i class="fa fa-minus-circle p-2 text-color"></i>
+                                                    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        
+                                                </div>
+                                        
+                                                <!-- Third Row: Description -->
+                                                <div class="custom-description">
+                                                    <span>{{food.description}}</span>
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                        
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+
+{% endblock content %}
+
