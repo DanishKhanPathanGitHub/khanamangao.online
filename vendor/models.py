@@ -28,13 +28,14 @@ class Vendor(models.Model):
 
         if is_new:
             super(Vendor, self).save(*args, **kwargs)  # Save the Vendor first
-            # Create OpeningHours for each day if this is a new Vendor
+            """# Create OpeningHours for each day if this is a new Vendor
             for day_value, day_name in DAYS:
                 OpeningHours.objects.get_or_create(
                     vendor=self,
                     day=day_value,
                     is_closed=True
-                )
+                )"""
+            pass
         else:
 
             # Check for changes in the is_approved field and send an email if needed

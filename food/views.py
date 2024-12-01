@@ -11,8 +11,6 @@ def home(request):
     location = request.session.get('location', '')
     lat = request.session.get('lat', '')
     long = request.session.get('long', '')
-    print("hello")
-    print(location, lat, long)
 
     if request.GET:
         location = request.GET.get('location')
@@ -23,8 +21,6 @@ def home(request):
         request.session['lat'] = lat
         request.session['long'] = long
 
-    print("hello again")
-    print(location, lat, long)
     
     vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)
     if long and lat:
@@ -33,12 +29,12 @@ def home(request):
             vendor_profile__location__distance_lte=(pnt, D(km=75))
         ).annotate(
         distance=Distance('vendor_profile__location', pnt)
-    ).order_by('distance')[:6]
+    ).order_by('distance')[:10]
         
     
 
     context = {
-        "vendors":vendors,
+        "vendors":vendors[:10],
         'location': location,
         'lat': lat,
         'long': long,
