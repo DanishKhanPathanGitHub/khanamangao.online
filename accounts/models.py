@@ -46,7 +46,6 @@ class User(AbstractBaseUser):
     lastname = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=254, unique=True)
-    phone_no = models.CharField(max_length=12, unique=True)
     role = models.PositiveSmallIntegerField(choices=role_choices, default=1)
     
     date_joined = models.DateTimeField(auto_now_add=True)

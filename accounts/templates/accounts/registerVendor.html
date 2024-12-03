@@ -45,11 +45,6 @@
                                                         </div>
                                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                             <div class="field-holder">
-                                                                <label>phone</label>{{user_form.phone_no}}
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                            <div class="field-holder">
                                                                 <label>Email Address</label>{{user_form.email}}
                                                             </div>
                                                         </div>
@@ -106,6 +101,7 @@
                                                 <div class="payment-holder">
                                                     <input type="submit" value="Submit" id="btn-next-restaurant-information" class="bgcolor">
                                                 </div>
+                                                <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-link btn-primary rounded">Sign in with Google</a>
                                             </div>
                                         </div>
                                     </div>

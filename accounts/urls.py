@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from . import views
 
 urlpatterns = [
@@ -17,5 +17,7 @@ urlpatterns = [
     path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('vendor/', include('vendor.urls')),
     path('customer/', include('customer.urls')),
+
+    re_path(r'^oauth/', include('social_django.urls', namespace='social')),
 ]
 

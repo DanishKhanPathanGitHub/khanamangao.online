@@ -39,15 +39,18 @@ def vendor_detail(request, slug):
         )
     )
     today = datetime.date.today().isoweekday()
+    print(today)
     opening_hours = OpeningHours.objects.filter(vendor=vendor)
+    print(opening_hours)
     if opening_hours:
         today_hours = opening_hours.filter(day=today)[0]
+
         if today_hours.is_closed:
             is_open = False
         else:
             from_hour = today_hours.from_hour 
             to_hour = today_hours.to_hour     
-
+            print(today_hours, 'hdehfuuhuh  ::', from_hour, to_hour)
             # Convert the string times to datetime objects
             from_time = datetime.datetime.strptime(from_hour, "%I:%M %p").time()
             to_time = datetime.datetime.strptime(to_hour, "%I:%M %p").time()
@@ -260,7 +263,6 @@ def checkout(request):
         'firstname':user.firstname,
         'lastname':user.lastname,
         'email':user.email,
-        'phone_no':user.phone_no,
         'address':user_profile.address,
         'country':user_profile.country,
         'state':user_profile.state,

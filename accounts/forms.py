@@ -5,7 +5,7 @@ class userForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = User
-        fields = ("firstname", "lastname", "username", "email", "phone_no", "password",)
+        fields = ("firstname", "lastname", "username", "email",  "password",)
 
     def clean(self):
         cleaned_data = super(userForm, self).clean()
@@ -37,4 +37,4 @@ class userProfileForm(forms.ModelForm):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('firstname', 'lastname', 'phone_no')
+        fields = ('firstname', 'lastname')

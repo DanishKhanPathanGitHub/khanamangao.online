@@ -54,7 +54,10 @@
                                                     <input type="submit" value="Submit" id="btn-next-restaurant-information" class="bgcolor">
                                                 </div>
                                                     <a href="{% url "forgot_password" %}">forgot password<a>
-                                            </div>
+                                                </div>
+                                                <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-link btn-primary rounded text-white">
+                                                    Sign in with Google&nbsp;&nbsp;<i class="fa fa-google" aria-hidden="true"></i>
+                                                </a>
                                         </div>
                                     </div>
                                 </li>
